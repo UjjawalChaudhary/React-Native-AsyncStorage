@@ -3,15 +3,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
-let data
+
 export default function App() {
 
   const saveData=async()=>{
-    let name = ['name', 'Roefan'];
-    let surname = ['surname', 'Akinomoto'];
+
     try {
     //  await AsyncStorage.setItem('DATA', JSON.stringify(names));
-    await AsyncStorage.multiSet([name, surname]);
+    await AsyncStorage.setItem('name', 'Kaithrin');
       console.log('saved');
     } catch(e) {
       // save error
@@ -20,8 +19,16 @@ export default function App() {
 
   const getData=async()=>{
     try {
-      const name = await AsyncStorage.multiGet(['name', 'surname']);
-      console.log('name:'+JSON.stringify(name));
+      const name = await AsyncStorage.getItem('name');
+      console.log('name:'+name);
+    } catch(e) {
+      // save error
+    }
+  }
+
+  const deleteData=async()=>{
+    try {
+      await AsyncStorage.removeItem('name');
     } catch(e) {
       // save error
     }
@@ -63,6 +70,23 @@ export default function App() {
         }}
       >
         <Text>Get Data</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{
+          width: "60%",
+          height: 50,
+          backgroundColor: "green",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop:30,
+          borderRadius: 10,
+        }}
+        onPress={() => {
+          deleteData();
+        }}
+      >
+        <Text>Delete Data</Text>
       </TouchableOpacity>
     </View>
   );
