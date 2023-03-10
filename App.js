@@ -3,13 +3,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
-
+let names = [];
 export default function App() {
   const [data, setData] = useState ('');
 
   const saveData=async()=>{
+    names.push(data);
     try {
-      await AsyncStorage.setItem('DATA', data);
+      await AsyncStorage.setItem('DATA', JSON.stringify(names));
       console.log('saved');
     } catch(e) {
       // save error
