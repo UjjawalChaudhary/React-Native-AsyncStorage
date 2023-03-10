@@ -3,14 +3,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
-let names = [];
+let data
 export default function App() {
-  const [data, setData] = useState ('');
 
   const saveData=async()=>{
-    names.push(data);
+    let name = ['name', 'Roefan'];
+    let surname = ['surname', 'Akinomoto'];
     try {
-      await AsyncStorage.setItem('DATA', JSON.stringify(names));
+    //  await AsyncStorage.setItem('DATA', JSON.stringify(names));
+    await AsyncStorage.multiSet([name, surname]);
       console.log('saved');
     } catch(e) {
       // save error
@@ -19,8 +20,8 @@ export default function App() {
 
   const getData=async()=>{
     try {
-      const name = await AsyncStorage.getItem('DATA');
-      console.log('name:'+name);
+      const name = await AsyncStorage.multiGet(['name', 'surname']);
+      console.log('name:'+JSON.stringify(name));
     } catch(e) {
       // save error
     }
@@ -28,17 +29,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <TextInput
-        placeholder="Enter data"
-        value={data}
-        onChangeText={txt => setData(txt)}
-        style={{
-          width:'60%',
-          height:50,
-          borderWidth:1,
-          paddingLeft:20
-        }}
-      />
+     
         
       <TouchableOpacity
         style={{
